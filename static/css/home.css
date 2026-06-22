@@ -1,0 +1,12 @@
+.left-item {
+    padding: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 5px;
+}
+
+.left-item:hover {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+    padding-left: 12px;
+}

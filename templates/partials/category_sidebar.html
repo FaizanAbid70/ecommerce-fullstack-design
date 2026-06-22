@@ -1,0 +1,62 @@
+<!-- Category / price / rating filter sidebar (Desktop only - hidden on mobile per Figma) -->
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <h6 class="fw-bold mb-3">Category</h6>
+        <ul class="list-unstyled mb-4">
+            <li class="mb-2">
+                <a href="?{% if query %}q={{ query }}&{% endif %}{% if selected_sort %}sort={{ selected_sort }}{% endif %}"
+                   class="text-decoration-none {% if not selected_category %}text-primary fw-bold{% else %}text-dark{% endif %}">
+                    All categories
+                </a>
+            </li>
+            {% for value, label in categories %}
+            <li class="mb-2">
+                <a href="?category={{ value }}{% if query %}&q={{ query }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}"
+                   class="text-decoration-none {% if selected_category == value %}text-primary fw-bold{% else %}text-dark{% endif %}">
+                    {{ label }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <hr>
+
+        <h6 class="fw-bold mb-3 mt-3">Price range</h6>
+        <form method="get" class="mb-4">
+            {% if query %}<input type="hidden" name="q" value="{{ query }}">{% endif %}
+            {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category }}">{% endif %}
+            {% if selected_sort %}<input type="hidden" name="sort" value="{{ selected_sort }}">{% endif %}
+            {% if min_rating %}<input type="hidden" name="min_rating" value="{{ min_rating }}">{% endif %}
+            <div class="d-flex gap-2 mb-2">
+                <input type="number" name="min_price" value="{{ min_price }}" placeholder="Min" class="form-control form-control-sm">
+                <input type="number" name="max_price" value="{{ max_price }}" placeholder="Max" class="form-control form-control-sm">
+            </div>
+            <button type="submit" class="btn btn-outline-primary btn-sm w-100">Apply</button>
+        </form>
+
+        <hr>
+
+        <h6 class="fw-bold mb-3 mt-3">Ratings</h6>
+        <ul class="list-unstyled mb-0">
+            {% for r in "4321" %}
+            <li class="mb-2">
+                <a href="?min_rating={{ r }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}"
+                   class="text-decoration-none {% if min_rating == r %}fw-bold{% endif %}">
+                    <span class="text-warning">
+                        {% for i in "12345" %}{% if forloop.counter <= r|add:0 %}&#9733;{% else %}&#9734;{% endif %}{% endfor %}
+                    </span>
+                    <span class="text-dark"> &amp; up</span>
+                </a>
+            </li>
+            {% endfor %}
+            {% if min_rating %}
+            <li>
+                <a href="?{% if query %}q={{ query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_sort %}sort={{ selected_sort }}{% endif %}"
+                   class="text-decoration-none text-danger small">Clear rating filter</a>
+            </li>
+            {% endif %}
+        </ul>
+
+    </div>
+</div>

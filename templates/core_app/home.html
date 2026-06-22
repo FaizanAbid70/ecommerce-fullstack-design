@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock style %}
+{% block title %}Home page{%endblock title %}
+{%block content%}
+
+
+<div class="container bg-white mt-3 p-3">
+
+    <div class="row">
+
+        <!-- LEFT CATEGORY MENU (Desktop Only) -->
+        <div class="col-lg-3 d-none d-lg-block">
+
+            <div class="h-100 bg-white p-3 shadow-sm">
+
+                <a href="{% url 'product_list' %}?category=automobiles" class="left-item d-block text-decoration-none text-dark">
+                    Automobiles
+                </a>
+
+                <a href="{% url 'product_list' %}?category=home_outdoor" class="left-item d-block text-decoration-none text-dark">
+                    Home interiors
+                </a>
+
+                <a href="{% url 'product_list' %}?category=electronics" class="left-item d-block text-decoration-none text-dark">
+                    Computer and tech
+                </a>
+
+                <a href="{% url 'product_list' %}" class="left-item d-block text-decoration-none text-dark">
+                    More category
+                </a>
+
+                <a href="{% url 'product_list' %}?category=accessories" class="left-item d-block text-decoration-none text-dark">
+                    Machinery tools
+                </a>
+
+                <a href="{% url 'product_list' %}?category=clothing" class="left-item d-block text-decoration-none text-dark">
+                    Sports and outdoor
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- CENTER BANNER -->
+        <div class="col-12 col-lg-6">
+
+            <img
+                src="{% static 'Images/Home_Page_Images/banner.png' %}"
+                alt="banner"
+                class="img-fluid w-100 rounded"
+            >
+
+        </div>
+
+        <!-- RIGHT CARDS (Desktop Only) -->
+        <div class="col-lg-3 d-none d-lg-block">
+
+            {% if not user.is_authenticated %}
+            <div class="card mb-3 shadow-sm" style="background-color:#E3F0FF;">
+
+                <div class="card-body">
+
+                    <img
+                        src="{% static 'Images/Home_Page_Images/Avatar.png' %}"
+                        alt="avatar"
+                        style="float:left;"
+                    >
+
+                    <p class="mb-0">Hi, there</p>
+
+                    <p>Let's get started</p>
+
+                    <a href="{% url 'signup' %}" class="btn btn-primary w-100 mb-2">
+                        Join now
+                    </a>
+
+                    <a href="{% url 'login' %}" class="btn bg-white text-primary w-100">
+                        Login
+                    </a>
+
+                </div>
+
+            </div>
+            {% else %}
+            <div class="card mb-3 shadow-sm" style="background-color:#E3F0FF;">
+                <div class="card-body">
+                    <img src="{% static 'Images/Home_Page_Images/Avatar.png' %}" alt="avatar" style="float:left;">
+                    <p class="mb-0">Hi, {{ user.username }}</p>
+                    <p>Welcome back</p>
+                    <a href="{% url 'cart' %}" class="btn btn-primary w-100">View cart</a>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="card mb-3 shadow-sm" style="background-color:#F38332;">
+
+                <div class="card-body">
+
+                    <p class="mb-0 text-white">
+                        Get US $10 off
+                    </p>
+
+                    <p class="mb-0 text-white">
+                        with a new
+                    </p>
+
+                    <p class="mb-0 text-white">
+                        suppliers
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="card shadow-sm" style="background-color:#55BDC3;">
+
+                <div class="card-body">
+
+                    <p class="mb-0 text-white">
+                        Send quotes with
+                    </p>
+
+                    <p class="mb-0 text-white">
+                        supplier
+                    </p>
+
+                    <p class="mb-0 text-white">
+                        preferences
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ============== DEALS AND OFFERS ============== -->
+<div class="container mt-3 bg-white py-3">
+
+  <!-- Desktop: fixed 6-up row -->
+  <div class="row g-0 d-none d-lg-flex">
+
+    <div class="col-2">
+      <img
+        src="{% static 'Images/Home_Page_Images/Deals_and_offer_images/coundown.png' %}"
+        alt="Logo"
+        class="img-fluid"
+      >
+    </div>
+
+    {% for product in deals_products %}
+    <div class="col-2">
+      <a href="{% url 'product_detail' product.pk %}" class="text-decoration-none text-dark">
+        <div class="card text-center h-100 rounded-0">
+          {% if product.image %}
+          <img
+            src="{{ product.image.url }}"
+            alt="{{ product.name }}"
+            class="mx-auto d-block mt-3"
+            style="width:101px;height:121px;object-fit:contain;"
+          >
+          {% endif %}
+          <div class="card-body">
+            <p class="card-text mb-1">{{ product.name|truncatechars:16 }}</p>
+            {% if product.discount_percent %}
+            <span class="badge bg-danger">-{{ product.discount_percent }}%</span>
+            {% endif %}
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+
+  </div>
+
+  <!-- Mobile: horizontal scroll -->
+  <div class="d-flex d-lg-none gap-2 overflow-auto pb-2">
+
+    <div style="min-width:90px;">
+      <img
+        src="{% static 'Images/Home_Page_Images/Deals_and_offer_images/coundown.png' %}"
+        alt="Logo"
+        class="img-fluid"
+      >
+    </div>
+
+    {% for product in deals_products %}
+    <a href="{% url 'product_detail' product.pk %}" class="text-decoration-none text-dark" style="min-width:130px;">
+      <div class="card text-center h-100 rounded-0">
+        {% if product.image %}
+        <img
+          src="{{ product.image.url }}"
+          alt="{{ product.name }}"
+          class="mx-auto d-block mt-2"
+          style="width:85px;height:100px;object-fit:contain;"
+        >
+        {% endif %}
+        <div class="card-body p-2">
+          <p class="card-text small mb-1">{{ product.name|truncatechars:16 }}</p>
+          {% if product.discount_percent %}
+          <span class="badge bg-danger">-{{ product.discount_percent }}%</span>
+          {% endif %}
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+
+  </div>
+
+</div>
+
+<!-- ============== HOME AND OUTDOOR ============== -->
+{% include "partials/category_showcase.html" with aside_image="Images/Home_Page_Images/home_and_outdoor/left-aside.png" products=home_outdoor_products %}
+
+<!-- ============== CONSUMER ELECTRONICS ============== -->
+{% include "partials/category_showcase.html" with aside_image="Images/Home_Page_Images/consumer_elec/left-side.png" products=electronics_products %}
+
+<div class="container mt-3 bg-white p-0">
+  <div class="row g-0">
+    <div class="col-12">
+      <img
+        src="{% static 'Images/Home_Page_Images/Section-inquiry.png' %}"
+        alt="section-inquiry"
+        class="img-fluid w-100 d-block"
+      >
+    </div>
+  </div>
+</div>
+<div class="container p-0">
+  <div class="row g-0">
+    <div class="col">
+      <h5 class="mt-3">Recommended items</h5>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-3 p-0">
+  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-3">
+
+    {% for product in recommended_products %}
+    <div class="col">
+      <a href="{% url 'product_detail' product.pk %}" class="text-decoration-none text-dark">
+        <div class="card h-100 rounded-0">
+          {% if product.image %}
+          <img
+            src="{{ product.image.url }}"
+            alt="{{ product.name }}"
+            class="mx-auto d-block mt-3 text-center"
+            style="width:101px;height:121px;object-fit:contain;"
+          >
+          {% endif %}
+          <div class="card-body">
+            <h5>${{ product.price }}</h5>
+            <p class="card-text">{{ product.name|truncatechars:32 }}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+
+  </div>
+
+</div>
+
+<div class="container mt-3 p-0">
+  <div class="row g-0">
+    <div class="col-12">
+      <img
+        src="{% static 'Images/Home_Page_Images/Section-service.png' %}"
+        alt="section-service"
+        class="img-fluid w-100 d-block"
+      >
+    </div>
+  </div>
+</div>
+<div class="container mt-3 p-0">
+  <div class="row g-0">
+    <div class="col-12">
+      <img
+        src="{% static 'Images/Home_Page_Images/Section-country.png' %}"
+        alt="section-service"
+        class="img-fluid w-100 d-block"
+      >
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt-3 p-0">
+  <div class="row g-0">
+    <div class="col-12">
+      <img
+        src="{% static 'Images/Home_Page_Images/newsletter-alibaba.png' %}"
+        alt="section-service"
+        class="img-fluid w-100 d-block"
+      >
+    </div>
+  </div>
+</div>
+{% endblock content %}
