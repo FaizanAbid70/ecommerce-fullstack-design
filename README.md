@@ -108,15 +108,3 @@ frontend) authenticate against the same product/cart data via the API.
 > deployment, swap to a managed Postgres add-on later — the Django ORM code
 > doesn't need to change, only `DATABASES` in `settings.py`.
 
-## 6. Suggested commit history (matches the 3 weekly milestones)
-
-```bash
-git add .
-git commit -m "Week 1: Static responsive frontend - Home, Listing, Details, Cart pages"
-
-# after backend + dynamic integration
-git commit -m "Week 2: Django backend with CRUD API and dynamic frontend integration"
-
-# after auth, cart persistence, admin panel, deploy config
-git commit -m "Week 3: JWT auth, cart persistence, admin panel, deployment ready"
-```
